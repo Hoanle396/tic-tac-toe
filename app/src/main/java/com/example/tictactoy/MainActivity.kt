@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         }
         playGame(cellid,btnselected)
     }
+    var playerwin1=0
+    var playerwin2=0
     var activeplayer=1
     var player1=ArrayList<Int>()
     var player2=ArrayList<Int>()
@@ -107,10 +109,14 @@ class MainActivity : AppCompatActivity() {
             winer=2;
         }
         if(winer==1){
+            playerwin1 +=1;
             Toast.makeText(this,"player 1 is winer", Toast.LENGTH_LONG).show()
+            restartGame()
         }
         else if(winer==2){
+            playerwin2 +=1;
             Toast.makeText(this,"player 2 is winer", Toast.LENGTH_LONG).show()
+            restartGame()
         }
     }
     fun autoPlay(){
@@ -120,22 +126,56 @@ class MainActivity : AppCompatActivity() {
                 emptyCell.add(cellId)
             }
         }
-        val r =Random()
-        val randomize=r.nextInt(emptyCell.size)
-        val cellId= emptyCell[randomize]
-        val selected : Button?
-         selected= when(cellId){
-            1->button1
-            2->button2
-            3->button3
-            4->button4
-            5->button5
-            6->button6
-            7->button7
-            8->button8
-            9->button9
-            else->{button1}
+        if(emptyCell.size==0){
+
+            Toast.makeText(this,"player 1 and player 2 is draw", Toast.LENGTH_LONG).show()
+            restartGame()
         }
-        playGame(cellId,selected)
+        else {
+            val r =Random()
+            val randomize=r.nextInt(emptyCell.size)
+            val cellId= emptyCell[randomize]
+            val selected: Button
+            selected = when (cellId) {
+                1 -> findViewById(R.id.button1)
+                2 -> findViewById(R.id.button2)
+                3 -> findViewById(R.id.button3)
+                4 -> findViewById(R.id.button4)
+                5 -> findViewById(R.id.button5)
+                6 -> findViewById(R.id.button6)
+                7 -> findViewById(R.id.button7)
+                8 -> findViewById(R.id.button8)
+                9 -> findViewById(R.id.button9)
+                else -> {
+                    findViewById(R.id.button1)
+                }
+            }
+            playGame(cellId, selected)
+        }
+    }
+    fun restartGame(){
+        activeplayer=1
+        player1.clear()
+        player2.clear()
+        for(cellId in 1..9){
+            val selected: Button
+            selected = when (cellId) {
+                1 -> findViewById(R.id.button1)
+                2 -> findViewById(R.id.button2)
+                3 -> findViewById(R.id.button3)
+                4 -> findViewById(R.id.button4)
+                5 -> findViewById(R.id.button5)
+                6 -> findViewById(R.id.button6)
+                7 -> findViewById(R.id.button7)
+                8 -> findViewById(R.id.button8)
+                9 -> findViewById(R.id.button9)
+                else -> {
+                    findViewById(R.id.button1)
+                }
+            }
+            selected.text=""
+            selected.setBackgroundResource(R.color.white)
+            Toast.makeText(this,"player 1 :$playerwin1 : player 2: $playerwin2", Toast.LENGTH_LONG).show()
+        }
     }
 }
